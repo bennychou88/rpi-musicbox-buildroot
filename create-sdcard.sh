@@ -8,7 +8,7 @@ usage() {
 Usage: $0 [--create-partitions] <device>
 
   --create-partitions  Will recreate partition layout on <device>
-  device               The SDCARD device: /dev/mmcblk0
+  device               The DEVICE device: /dev/mmcblk0
 
 EOH
 }
@@ -56,18 +56,18 @@ w
 END
 
   sleep 1
+  mkfs.ext4 -F -q -L data $DEVICE?3
 
 fi
 
-mkfs.vfat -F 16 -n boot -I "${SDCARDP}1"
-mkfs.ext4 -F -q -L root "${SDCARDP}2"
-mkfs.ext4 -F -q -L data "${SDCARDP}3"
+mkfs.vfat -F 16 -n boot -I $DEVICE?1
+mkfs.ext4 -F -q -L root $DEVICE?2
 
 
 BASEDIR=$(basedir $0)
 MNT=$(mktemp -d --tmpdir $BASEDIR)
 
-sudo mount ${DEVICE}?1 $MNT
+sudo mount $DEVICE?1 $MNT
 find $BASEDIR/buildroot/output/images/rpi-firmware -type f -exec sudo cp {} $MNT \+
 find $BASEDIR/buildroot/output/images -type f -maxdepth 1 -name '*.dtb' -exec sudo cp {} $MNT \+
 sudo cp $BASEDIR/buildroot/output/images/zImage $MNT
