@@ -1,0 +1,34 @@
+#!/bin/sh
+
+CONFIG_FILE=/etc/hostapd/music.conf
+PID_FILE=/var/run/hostapd.pid
+
+start() {
+        printf "Starting hostapd: "
+        ifconfig wlan0 up
+        start-stop-daemon --start --quiet --background --exec /usr/sbin/hostapd -- -B -P $PID_FILE $CONFIG_FILE \
+                && echo "OK" || echo "FAIL"
+}
+
+stop() {
+        printf "Stopping hostapd: "
+        start-stop-daemon --stop --quiet --pidfile $PID_FILE \
+                && echo "OK" || echo "FAIL"
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart|reload)
+                stop
+                sleep 1
+                start
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+esac

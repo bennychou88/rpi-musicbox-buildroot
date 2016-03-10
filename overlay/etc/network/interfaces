@@ -1,0 +1,10 @@
+auto lo
+iface lo inet loopback
+
+allow-hotplug eth0
+iface eth0 inet dhcp
+	wait-delay 15
+
+iface wlan0 inet static
+	address 1.2.3.4
+	netmask 255.255.255.0
