@@ -24,6 +24,8 @@ In `config_rpimusic`, I added:
 - hostapd, dnsmasq, dhcpd, dhclient
 - openssh
 
+`boot/` contains raspberry pi config.txt and cmdline.txt files to customize boot parameters (such as read-only filesystem).
+
 `overlay/` contains files added to the target filesystem.
 
 `pre-image.sh` is run before the target image is built.

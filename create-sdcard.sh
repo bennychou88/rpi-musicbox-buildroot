@@ -70,7 +70,8 @@ MNT=$(mktemp -d --tmpdir $BASEDIR)
 sudo mount ${DEVICE}?1 $MNT
 find $BASEDIR/buildroot/output/images/rpi-firmware -type f -exec sudo cp {} $MNT \+
 find $BASEDIR/buildroot/output/images -type f -maxdepth 1 -name '*.dtb' -exec sudo cp {} $MNT \+
-sudo cp $BASEDIR/buildroot/output/images/zImage $MNT/kernel.img
+sudo cp $BASEDIR/buildroot/output/images/zImage $MNT
+sudo cp -r $BASEDIR/boot/* $MNT
 sudo umount $MNT
 
 sudo mount ${DEVICE}?2 $MNT
