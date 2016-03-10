@@ -1,6 +1,6 @@
 #!/bin/bash
 
-target="$(basedir $0)/buildroot/output/target"
+target="$(dirname $0)/buildroot/output/target"
 
 mkdir -p $target/home/mpd
 

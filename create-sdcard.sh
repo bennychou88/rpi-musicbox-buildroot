@@ -30,7 +30,7 @@ if [ "$PARTITION" == "yes" ] ; then
   # 1: 32M
   # 2: 200M
   # 3: available
-  sudo fdisk $DEVICE <<END
+  fdisk $DEVICE <<END
 o
 n
 p
@@ -64,19 +64,19 @@ mkfs.vfat -F 16 -n boot -I $DEVICE?1
 mkfs.ext4 -F -q -L root $DEVICE?2
 
 
-BASEDIR=$(basedir $0)
-MNT=$(mktemp -d --tmpdir $BASEDIR)
+BASEDIR=$(dirname $0)
+MNT=$(mktemp -d --tmpdir=$BASEDIR mnt-XXX)
 
-sudo mount $DEVICE?1 $MNT
-find $BASEDIR/buildroot/output/images/rpi-firmware -type f -exec sudo cp {} $MNT \+
-find $BASEDIR/buildroot/output/images -type f -maxdepth 1 -name '*.dtb' -exec sudo cp {} $MNT \+
-sudo cp $BASEDIR/buildroot/output/images/zImage $MNT
-sudo cp -r $BASEDIR/boot/* $MNT
-sudo umount $MNT
+mount $DEVICE?1 $MNT
+find $BASEDIR/buildroot/output/images/rpi-firmware -type f -exec cp {} $MNT \;
+find $BASEDIR/buildroot/output/images -maxdepth 1 -type f -name '*.dtb' -exec cp {} $MNT \;
+cp $BASEDIR/buildroot/output/images/zImage $MNT
+cp -r $BASEDIR/boot/* $MNT
+umount $MNT
 
-sudo mount ${DEVICE}?2 $MNT
-sudo tar xpsf $BASEDIR/buildroot/output/images/rootfs.tar -C $MNT
-sudo umount $MNT
+mount ${DEVICE}?2 $MNT
+tar xpsf $BASEDIR/buildroot/output/images/rootfs.tar -C $MNT
+umount $MNT
 
 rmdir $MNT
 
