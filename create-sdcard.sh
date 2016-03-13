@@ -70,7 +70,7 @@ MNT=$(mktemp -d --tmpdir=$BASEDIR mnt-XXX)
 mount $DEVICE?1 $MNT
 find $BASEDIR/buildroot/output/images/rpi-firmware -type f -exec cp {} $MNT \;
 find $BASEDIR/buildroot/output/images -maxdepth 1 -type f -name '*.dtb' -exec cp {} $MNT \;
-cp $BASEDIR/buildroot/output/images/zImage $MNT
+cp $BASEDIR/buildroot/output/images/kernel-marked/zImage $MNT
 cp -r $BASEDIR/boot/* $MNT
 umount $MNT
 
