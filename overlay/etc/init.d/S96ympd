@@ -5,7 +5,7 @@
 
 start() {
 	printf "Starting MPD web ui: "
-	nohup ympd 2>&1 >> /var/log/ympd.log  &
+	nohup ympd --webport 80 2>&1 >> /var/log/ympd.log  &
 	echo "OK"
 }
 
