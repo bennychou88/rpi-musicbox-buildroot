@@ -2,7 +2,13 @@
 
 target="$(dirname $0)/buildroot/output/target"
 
-mkdir -p $target/home/mpd
+DIRECTORIES="
+home/mpd
+home/persistent/ro
+home/persistent/rw
+"
+
+$(cd $target && mkdir -p $DIRECTORIES)
 
 test -f $target/etc/ssh/ssh_host_key      || ssh-keygen -q -f $target/etc/ssh/ssh_host_key -N '' -t rsa1
 test -f $target/etc/ssh/ssh_host_rsa_key  || ssh-keygen -f $target/etc/ssh/ssh_host_rsa_key -N '' -t rsa

@@ -1,0 +1,56 @@
+#!/bin/sh
+
+log() {
+  logger -t mdp-state-recorder $1
+}
+
+state_recorder() {
+
+  fsck.ext4 -nf /dev/mmcblk0p5
+  if [ ! $? -eq 0 ] ; then
+    mkfs.ext4 /dev/mmcblk0p5
+  fi
+
+  while true ; do
+
+    log "waiting for 'player' event"
+    mpc idle player
+    log "saving mpd state"
+    mount /home/persistent/rw
+    cp /var/lib/mpd/state /home/persistent/rw/state
+    umount /home/persistent/rw
+
+  done
+}
+
+start() {
+  printf "Starting mpd state recorder: "
+  nohup $0 state-recorder > /var/log/mpd-state-recorder.log &
+  echo "OK"
+}
+
+stop() {
+  printf "Stopping mpd state recorder: "
+  echo "OK"
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload)
+    stop
+    start
+    ;;
+  state-recorder)
+    state_recorder
+    ;;
+  *)
+  echo "Usage: $0 {start|stop|restart}"
+  exit 1
+esac
+
+exit $?
