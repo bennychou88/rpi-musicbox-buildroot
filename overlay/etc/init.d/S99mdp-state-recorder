@@ -6,11 +6,6 @@ log() {
 
 state_recorder() {
 
-  fsck.ext4 -nf /dev/mmcblk0p5
-  if [ ! $? -eq 0 ] ; then
-    mkfs.ext4 /dev/mmcblk0p5
-  fi
-
   while true ; do
 
     log "waiting for 'player' event"
@@ -21,6 +16,7 @@ state_recorder() {
     umount /home/persistent/rw
 
   done
+
 }
 
 start() {

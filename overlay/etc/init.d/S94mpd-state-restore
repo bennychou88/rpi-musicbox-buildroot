@@ -1,0 +1,28 @@
+#!/bin/sh
+
+start() {
+  printf "Restore last known mpd state: "
+
+  fsck.ext4 -nf /dev/mmcblk0p5
+  if [ ! $? -eq 0 ] ; then
+    mkfs.ext4 /dev/mmcblk0p5
+  fi
+
+  mount /dev/mmcblk0p5 /home/persistent/ro
+  if [ -f /home/persistent/ro/state ] ; then
+    cp /home/persistent/ro/state /var/lib/mpd/state
+  fi
+  umount /home/persistent/ro
+
+  echo "OK"
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  *)
+  echo "Usage: $0 {start}"
+  exit 1
+esac
+

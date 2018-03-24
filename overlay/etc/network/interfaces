@@ -8,3 +8,4 @@ iface eth0 inet dhcp
 iface wlan0 inet static
 	address 1.2.3.4
 	netmask 255.255.255.0
+	wait-delay 15

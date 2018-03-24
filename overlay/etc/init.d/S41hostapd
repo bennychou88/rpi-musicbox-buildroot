@@ -5,7 +5,6 @@ PID_FILE=/var/run/hostapd.pid
 
 start() {
         printf "Starting hostapd: "
-        ifconfig wlan0 up
         start-stop-daemon --start --quiet --background --exec /usr/sbin/hostapd -- -B -P $PID_FILE $CONFIG_FILE \
                 && echo "OK" || echo "FAIL"
 }
